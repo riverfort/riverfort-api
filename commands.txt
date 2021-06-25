@@ -6,3 +6,5 @@ python manage.py inspectdb --database=companies_db > models.py
 
 coverage run --omit='*/venv/*' manage.py test
 coverage html
+
+flake8
