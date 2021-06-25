@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from company.models import CompanyProfile
 
+
 class CompanyProfileSerializer(serializers.ModelSerializer):
 
     class Meta:

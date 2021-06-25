@@ -24,6 +24,7 @@ class AuthRouter:
             return db == 'users_db'
         return None
 
+
 class CompanyRouter:
     route_app_labels = {'company'}
 

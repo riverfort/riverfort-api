@@ -62,7 +62,8 @@ class CompanyProfile(models.Model):
 
 
 class CompanyQuote(models.Model):
-    company_ticker = models.OneToOneField(CompanyProfile, models.DO_NOTHING, db_column='company_ticker', primary_key=True)
+    company_ticker = models.OneToOneField(
+      CompanyProfile, models.DO_NOTHING, db_column='company_ticker', primary_key=True)
     market_cap = models.FloatField(blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
     timestamp = models.DateTimeField()
@@ -73,7 +74,8 @@ class CompanyQuote(models.Model):
 
 
 class CompanyTrading(models.Model):
-    company_ticker = models.OneToOneField(CompanyProfile, models.DO_NOTHING, db_column='company_ticker', primary_key=True)
+    company_ticker = models.OneToOneField(
+      CompanyProfile, models.DO_NOTHING, db_column='company_ticker', primary_key=True)
     market_date = models.DateField()
     open = models.FloatField(blank=True, null=True)
     close = models.FloatField(blank=True, null=True)
