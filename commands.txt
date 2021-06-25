@@ -1,0 +1,8 @@
+python manage.py migrate --database=users_db
+python manage.py createsuperuser --database=users_db
+
+python manage.py inspectdb --database=companies_db
+python manage.py inspectdb --database=companies_db > models.py
+
+coverage run --omit='*/venv/*' manage.py test
+coverage html
