@@ -30,11 +30,11 @@ class CompanyAdtv(models.Model):
     adtv120 = models.FloatField(blank=True, null=True)
     isoutlier = models.BooleanField(blank=True, null=True)
     aadtv = models.FloatField(blank=True, null=True)
-    aadtv5 = models.FloatField(blank=True, null=True)
-    aadtv10 = models.FloatField(blank=True, null=True)
-    aadtv20 = models.FloatField(blank=True, null=True)
-    aadtv60 = models.FloatField(blank=True, null=True)
-    aadtv120 = models.FloatField(blank=True, null=True)
+    aadtv5 = models.DecimalField(max_digits=19, decimal_places=2, blank=True, null=True)
+    aadtv10 = models.DecimalField(max_digits=19, decimal_places=2, blank=True, null=True)
+    aadtv20 = models.DecimalField(max_digits=19, decimal_places=2, blank=True, null=True)
+    aadtv60 = models.DecimalField(max_digits=19, decimal_places=2, blank=True, null=True)
+    aadtv120 = models.DecimalField(max_digits=19, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False
