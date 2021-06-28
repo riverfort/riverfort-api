@@ -4,6 +4,6 @@ from .views import CompanyProfileList, CompanyProfileDetail
 app_name = 'company_api'
 
 urlpatterns = [
-    path('<str:pk>/', CompanyProfileDetail.as_view(), name='companyprofiledetail'),
-    path('', CompanyProfileList.as_view(), name='companyprofilelist')
+    path('companies/<str:pk>', CompanyProfileDetail.as_view(), name='companyprofiledetail'),
+    path('companies', CompanyProfileList.as_view(), name='companyprofilelist')
 ]
