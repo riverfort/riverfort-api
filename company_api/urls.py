@@ -1,10 +1,10 @@
 from django.urls import path
-from .views import CompanyProfileList, CompanyProfileDetail, CompanyQuote
+from .views import CompanyProfileList, CompanyProfile, CompanyQuote
 
 app_name = 'company_api'
 
 urlpatterns = [
     path('companies/<str:pk>/quote', CompanyQuote.as_view(), name='company-quote'),
-    path('companies/<str:pk>', CompanyProfileDetail.as_view(), name='company-profile'),
+    path('companies/<str:pk>', CompanyProfile.as_view(), name='company-profile'),
     path('companies', CompanyProfileList.as_view(), name='company-profile-list')
 ]

@@ -8,7 +8,7 @@ class CompanyProfileList(generics.ListAPIView):
     serializer_class = CompanyProfileSerializer
 
 
-class CompanyProfileDetail(generics.RetrieveAPIView):
+class CompanyProfile(generics.RetrieveAPIView):
     queryset = CompanyProfile.objects.all()
     serializer_class = CompanyProfileSerializer
 
