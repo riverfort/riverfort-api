@@ -1,6 +1,6 @@
 from rest_framework import generics
-from company.models import CompanyProfile, CompanyQuote
-from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer
+from company.models import CompanyProfile, CompanyQuote, CompanyTrading
+from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, CompanyTradingSerializer
 
 
 class CompanyProfileList(generics.ListAPIView):
@@ -16,3 +16,11 @@ class CompanyProfile(generics.RetrieveAPIView):
 class CompanyQuote(generics.RetrieveAPIView):
     queryset = CompanyQuote.objects.all()
     serializer_class = CompanyQuoteSerializer
+
+
+class CompanyTradingList(generics.ListAPIView):
+    serializer_class = CompanyTradingSerializer
+
+    def get_queryset(self):
+        company_ticker = self.kwargs['pk']
+        return CompanyTrading.objects.filter(company_ticker=company_ticker)
