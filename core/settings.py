@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'company',
+    'company_streak',
     'company_api',
 ]
 
@@ -85,7 +86,7 @@ DATABASES = {
             'DEPENDENCIES': []
         },
     },
-    'companies_db': {
+    'companies_streak_db': {
         'ENGINE': 'django.db.backends.{}'.format('postgresql_psycopg2'),
         'NAME': 'riverFort',
         'USER': 'river',
