@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from company_streak.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv
+from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv
 
 
 class CompanyProfileSerializer(serializers.ModelSerializer):
