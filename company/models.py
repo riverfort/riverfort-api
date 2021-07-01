@@ -19,6 +19,21 @@ class AccountManager(models.Model):
         db_table = 'account_manager'
 
 
+class Company(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    symbol = models.CharField(max_length=50, blank=True, null=True)
+    am_name = models.CharField(max_length=100, blank=True, null=True)
+    am_email = models.CharField(max_length=100, blank=True, null=True)
+    region = models.CharField(max_length=100, blank=True, null=True)
+    status = models.CharField(max_length=5, blank=True, null=True)
+    isstreak = models.BooleanField(blank=True, null=True)
+    isaddon = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'company'
+
+
 class CompanyAdtv(models.Model):
     company_ticker = models.CharField(primary_key=True, max_length=10)
     date = models.DateField()
@@ -92,7 +107,7 @@ class CompanyTrading(models.Model):
 
 
 class FmpData(models.Model):
-    id = models.OneToOneField('StreakCompanies', models.DO_NOTHING, db_column='id', blank=True, primary_key=True)
+    id = models.OneToOneField(Company, models.DO_NOTHING, db_column='id', blank=True, primary_key=True)
     symbol = models.CharField(max_length=40, blank=True, null=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     currency = models.CharField(max_length=25, blank=True, null=True)
@@ -105,7 +120,7 @@ class FmpData(models.Model):
 
 
 class IexData(models.Model):
-    id = models.OneToOneField('StreakCompanies', models.DO_NOTHING, db_column='id', blank=True, primary_key=True)
+    id = models.OneToOneField(Company, models.DO_NOTHING, db_column='id', blank=True, primary_key=True)
     symbol = models.CharField(max_length=50, blank=True, null=True)
     cik = models.CharField(max_length=50, blank=True, null=True)
     exchange = models.CharField(max_length=25, blank=True, null=True)
@@ -117,16 +132,3 @@ class IexData(models.Model):
     class Meta:
         managed = False
         db_table = 'iex_data'
-
-
-class StreakCompanies(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
-    symbol = models.CharField(max_length=50, blank=True, null=True)
-    am_name = models.CharField(max_length=100, blank=True, null=True)
-    am_email = models.CharField(max_length=100, blank=True, null=True)
-    region = models.CharField(max_length=100, blank=True, null=True)
-    status = models.CharField(max_length=5, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'streak_companies'
