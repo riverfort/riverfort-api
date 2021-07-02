@@ -1,7 +1,8 @@
 from rest_framework import generics
-from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv
+from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
 from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
-    CompanyTradingSerializer, CompanyAdtvSerializer
+                         CompanyTradingSerializer, CompanyAdtvSerializer, \
+                         CompanySerializer, FmpDataSerializer, IexDataSerializer
 
 
 class CompanyProfileList(generics.ListAPIView):
@@ -33,3 +34,18 @@ class CompanyAdtvList(generics.ListAPIView):
     def get_queryset(self):
         company_ticker = self.kwargs['pk']
         return CompanyAdtv.objects.filter(company_ticker=company_ticker)
+
+
+class CompanyList(generics.ListCreateAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+
+class FmpDataList(generics.ListCreateAPIView):
+    queryset = FmpData.objects.all()
+    serializer_class = FmpDataSerializer
+
+
+class IexDataList(generics.ListCreateAPIView):
+    queryset = IexData.objects.all()
+    serializer_class = IexDataSerializer
