@@ -1,5 +1,7 @@
 from rest_framework import generics
 from rest_framework import filters
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
 from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
                          CompanyTradingSerializer, CompanyAdtvSerializer, \
@@ -56,3 +58,19 @@ class FmpDataList(generics.ListCreateAPIView):
 class IexDataList(generics.ListCreateAPIView):
     queryset = IexData.objects.all()
     serializer_class = IexDataSerializer
+
+
+class CompanyTradingQuote(APIView):
+
+    def get(self, request, pk, format=None):
+        company_trading_quote = CompanyTrading.objects.filter(company_ticker=pk).order_by('-market_date').first()
+        serializer = CompanyTradingSerializer(company_trading_quote, many=False)
+        return Response(serializer.data)
+
+
+class CompanyAdtvQuote(APIView):
+
+    def get(self, request, pk, format=None):
+        company_adtv_quote = CompanyAdtv.objects.filter(company_ticker=pk).order_by('-date').first()
+        serializer = CompanyAdtvSerializer(company_adtv_quote, many=False)
+        return Response(serializer.data)
