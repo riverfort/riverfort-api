@@ -9,6 +9,8 @@ from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
 class CompanyProfileList(generics.ListAPIView):
     queryset = CompanyProfile.objects.all()
     serializer_class = CompanyProfileSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['company_name']
 
 
 class CompanyProfile(generics.RetrieveAPIView):
