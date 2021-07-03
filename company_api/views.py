@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework import filters
 from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
 from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
                          CompanyTradingSerializer, CompanyAdtvSerializer, \
@@ -22,6 +23,8 @@ class CompanyQuote(generics.RetrieveAPIView):
 
 class CompanyTradingList(generics.ListAPIView):
     serializer_class = CompanyTradingSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['market_date']
 
     def get_queryset(self):
         company_ticker = self.kwargs['pk']
@@ -30,6 +33,8 @@ class CompanyTradingList(generics.ListAPIView):
 
 class CompanyAdtvList(generics.ListAPIView):
     serializer_class = CompanyAdtvSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['date']
 
     def get_queryset(self):
         company_ticker = self.kwargs['pk']
