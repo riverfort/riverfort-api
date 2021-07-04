@@ -15,6 +15,6 @@ urlpatterns = [
     path('companies', CompanyProfileList.as_view(), name='company-profile-list'),
 
     path('company/list', CompanyList.as_view(), name='company-list-create'),
-    path('company/fmp/list', FmpDataList.as_view(), name='fmp-data-list-create'),
-    path('company/iex/list', IexDataList.as_view(), name='iex-data-list-create'),
+    path('company/list/fmp', FmpDataList.as_view(), name='fmp-list-create'),
+    path('company/list/iex', IexDataList.as_view(), name='iex-list-create'),
 ]
