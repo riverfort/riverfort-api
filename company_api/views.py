@@ -14,6 +14,21 @@ class CompanyProfileList(generics.ListAPIView):
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['company_name']
 
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+
+        fields = None
+        if self.request.method == 'GET':
+            query_fields = self.request.query_params.get("fields", None)
+
+            if query_fields:
+                fields = tuple(query_fields.split(','))
+
+        kwargs['context'] = self.get_serializer_context()
+        kwargs['fields'] = fields
+
+        return serializer_class(*args, **kwargs)
+
 
 class CompanyProfile(generics.RetrieveAPIView):
     queryset = CompanyProfile.objects.all()
