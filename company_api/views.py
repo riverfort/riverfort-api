@@ -59,6 +59,21 @@ class CompanyAdtvList(generics.ListAPIView):
         company_ticker = self.kwargs['pk']
         return CompanyAdtv.objects.filter(company_ticker=company_ticker)
 
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+
+        fields = None
+        if self.request.method == 'GET':
+            query_fields = self.request.query_params.get("fields", None)
+
+            if query_fields:
+                fields = tuple(query_fields.split(','))
+
+        kwargs['context'] = self.get_serializer_context()
+        kwargs['fields'] = fields
+
+        return serializer_class(*args, **kwargs)
+
 
 class CompanyList(generics.ListCreateAPIView):
     queryset = Company.objects.all()

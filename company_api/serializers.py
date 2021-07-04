@@ -44,7 +44,7 @@ class CompanyTradingSerializer(serializers.ModelSerializer):
         fields = ('company_ticker', 'market_date', 'open', 'close', 'high', 'low', 'vwap', 'volume', 'change_percent')
 
 
-class CompanyAdtvSerializer(serializers.ModelSerializer):
+class CompanyAdtvSerializer(DynamicFieldsModelSerializer):
 
     class Meta:
         model = CompanyAdtv
