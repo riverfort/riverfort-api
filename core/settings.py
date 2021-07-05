@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+import logging.config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^-!0+r^8r$cef^o$ku9ml6@$3f!zb)av5b%8-ndo)y0lqq=sl='
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -87,12 +89,12 @@ DATABASES = {
         },
     },
     'companies_db': {
-        'ENGINE': 'django.db.backends.{}'.format('postgresql_psycopg2'),
-        'NAME': 'riverFort',
-        'USER': 'river',
-        'PASSWORD': 'fort',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.{}'.format(config('COMPANIES_DATABASE_ENGINE')),
+        'NAME': config('COMPANIES_DATABASE_NAME'),
+        'USER': config('COMPANIES_DATABASE_USER'),
+        'PASSWORD': config('COMPANIES_DATABASE_PASSWORD'),
+        'HOST': config('COMPANIES_DATABASE_HOST'),
+        'PORT': config('COMPANIES_DATABASE_PORT'),
         'TEST': {
             'DEPENDENCIES': []
         },
@@ -143,3 +145,34 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Logging Configuration
+
+# Clear prev config
+LOGGING_CONFIG = None
+
+# Get loglevel from env
+LOGLEVEL = config('DJANGO_LOGLEVEL', default='INFO')
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(process)d %(thread)d %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': LOGLEVEL,
+            'handlers': ['console', ],
+        },
+    },
+})
