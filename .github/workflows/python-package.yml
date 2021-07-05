@@ -31,7 +31,7 @@ jobs:
       - name: Coverage report
         env: 
           SECRET_KEY: om_8x$k00o5f-c=2v5fo#%rmwt8pmar_nzmmulj4hq%wn9q2^c
-          COMPANIES_DATABASE_ENGINE: engine
+          COMPANIES_DATABASE_ENGINE: postgresql_psycopg2
           COMPANIES_DATABASE_NAME: name
           COMPANIES_DATABASE_USER: user
           COMPANIES_DATABASE_PASSWORD: password
