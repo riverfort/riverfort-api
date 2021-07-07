@@ -8,69 +8,42 @@ from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
                          CompanySerializer, FmpDataSerializer, IexDataSerializer
 
 
-class CompanyProfileList(generics.ListAPIView):
+class DynamicFieldsViewMixin(object):
+
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+
+        fields = None
+        if self.request.method == 'GET':
+            query_fields = self.request.query_params.get("fields", None)
+
+            if query_fields:
+                fields = tuple(query_fields.split(','))
+
+        kwargs['context'] = self.get_serializer_context()
+        kwargs['fields'] = fields
+
+        return serializer_class(*args, **kwargs)
+
+
+class CompanyProfileList(DynamicFieldsViewMixin, generics.ListAPIView):
     queryset = CompanyProfile.objects.all()
     serializer_class = CompanyProfileSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['company_name']
 
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
 
-        fields = None
-        if self.request.method == 'GET':
-            query_fields = self.request.query_params.get("fields", None)
-
-            if query_fields:
-                fields = tuple(query_fields.split(','))
-
-        kwargs['context'] = self.get_serializer_context()
-        kwargs['fields'] = fields
-
-        return serializer_class(*args, **kwargs)
-
-
-class CompanyProfile(generics.RetrieveAPIView):
+class CompanyProfile(DynamicFieldsViewMixin, generics.RetrieveAPIView):
     queryset = CompanyProfile.objects.all()
     serializer_class = CompanyProfileSerializer
 
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
 
-        fields = None
-        if self.request.method == 'GET':
-            query_fields = self.request.query_params.get("fields", None)
-
-            if query_fields:
-                fields = tuple(query_fields.split(','))
-
-        kwargs['context'] = self.get_serializer_context()
-        kwargs['fields'] = fields
-
-        return serializer_class(*args, **kwargs)
-
-
-class CompanyQuote(generics.RetrieveAPIView):
+class CompanyQuote(DynamicFieldsViewMixin, generics.RetrieveAPIView):
     queryset = CompanyQuote.objects.all()
     serializer_class = CompanyQuoteSerializer
 
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
 
-        fields = None
-        if self.request.method == 'GET':
-            query_fields = self.request.query_params.get("fields", None)
-
-            if query_fields:
-                fields = tuple(query_fields.split(','))
-
-        kwargs['context'] = self.get_serializer_context()
-        kwargs['fields'] = fields
-
-        return serializer_class(*args, **kwargs)
-
-
-class CompanyTradingList(generics.ListAPIView):
+class CompanyTradingList(DynamicFieldsViewMixin, generics.ListAPIView):
     serializer_class = CompanyTradingSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['market_date']
@@ -80,7 +53,7 @@ class CompanyTradingList(generics.ListAPIView):
         return CompanyTrading.objects.filter(company_ticker=company_ticker)
 
 
-class CompanyAdtvList(generics.ListAPIView):
+class CompanyAdtvList(DynamicFieldsViewMixin, generics.ListAPIView):
     serializer_class = CompanyAdtvSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['date']
@@ -88,21 +61,6 @@ class CompanyAdtvList(generics.ListAPIView):
     def get_queryset(self):
         company_ticker = self.kwargs['pk']
         return CompanyAdtv.objects.filter(company_ticker=company_ticker)
-
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
-
-        fields = None
-        if self.request.method == 'GET':
-            query_fields = self.request.query_params.get("fields", None)
-
-            if query_fields:
-                fields = tuple(query_fields.split(','))
-
-        kwargs['context'] = self.get_serializer_context()
-        kwargs['fields'] = fields
-
-        return serializer_class(*args, **kwargs)
 
 
 class CompanyList(generics.ListCreateAPIView):
