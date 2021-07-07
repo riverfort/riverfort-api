@@ -30,7 +30,7 @@ class CompanyProfileSerializer(DynamicFieldsModelSerializer):
         fields = ('company_ticker', 'company_name', 'exchange', 'currency', 'industry', 'sector', 'isin', 'country')
 
 
-class CompanyQuoteSerializer(serializers.ModelSerializer):
+class CompanyQuoteSerializer(DynamicFieldsModelSerializer):
 
     class Meta:
         model = CompanyQuote

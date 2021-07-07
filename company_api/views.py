@@ -54,6 +54,21 @@ class CompanyQuote(generics.RetrieveAPIView):
     queryset = CompanyQuote.objects.all()
     serializer_class = CompanyQuoteSerializer
 
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+
+        fields = None
+        if self.request.method == 'GET':
+            query_fields = self.request.query_params.get("fields", None)
+
+            if query_fields:
+                fields = tuple(query_fields.split(','))
+
+        kwargs['context'] = self.get_serializer_context()
+        kwargs['fields'] = fields
+
+        return serializer_class(*args, **kwargs)
+
 
 class CompanyTradingList(generics.ListAPIView):
     serializer_class = CompanyTradingSerializer
