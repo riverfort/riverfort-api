@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
+from company_api.models import AddOnCompany
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -71,3 +72,50 @@ class IexDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = IexData
         fields = ('id', 'symbol', 'cik', 'exchange', 'securityname', 'securitytype', 'region', 'sector')
+
+
+class AddOnCompanySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AddOnCompany
+        fields = ('company_ticker', 'company_name')
+
+
+class Companies_Quotes_Trading_ADTV_Serializer(serializers.Serializer):
+  company_ticker = serializers.CharField(max_length=25)
+  company_name   = serializers.CharField(max_length=100)
+  exchange       = serializers.CharField(max_length=100)
+  exchange_type  = serializers.CharField(max_length=25)
+  currency       = serializers.CharField(max_length=5)
+  industry       = serializers.CharField(max_length=100)
+  sector         = serializers.CharField(max_length=100)
+  isin           = serializers.CharField(max_length=50)
+  country        = serializers.CharField(max_length=50)
+  normalizer     = serializers.IntegerField()
+  am_uid         = serializers.CharField()
+  created_date   = serializers.DateTimeField()
+  market_cap     = serializers.FloatField()
+  price          = serializers.FloatField()
+  timestamp      = serializers.DateTimeField()
+  market_date    = serializers.DateField()
+  open           = serializers.FloatField()
+  close          = serializers.FloatField()
+  high           = serializers.FloatField()
+  low            = serializers.FloatField()
+  vwap           = serializers.FloatField()
+  volume         = serializers.FloatField()
+  change_percent = serializers.FloatField()
+  date           = serializers.DateField()
+  adtv           = serializers.FloatField()
+  adtv5          = serializers.FloatField()
+  adtv10         = serializers.FloatField()
+  adtv20         = serializers.FloatField()
+  adtv60         = serializers.FloatField()
+  adtv120        = serializers.FloatField()
+  isoutlier      = serializers.BooleanField()
+  aadtv          = serializers.FloatField()
+  aadtv5         = serializers.DecimalField(max_digits=19, decimal_places=0)
+  aadtv10        = serializers.DecimalField(max_digits=19, decimal_places=0)
+  aadtv20        = serializers.DecimalField(max_digits=19, decimal_places=0)
+  aadtv60        = serializers.DecimalField(max_digits=19, decimal_places=0)
+  aadtv120       = serializers.DecimalField(max_digits=19, decimal_places=0)

@@ -1,142 +1,9 @@
-from rest_framework import generics
-from rest_framework import filters
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
-from company_api.models import Company_Profile
-from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
-                         CompanyTradingSerializer, CompanyAdtvSerializer, \
-                         CompanySerializer, FmpDataSerializer, IexDataSerializer, \
-                         AddOnCompanySerializer, \
-                         Companies_Quotes_Trading_ADTV_Serializer
-
-
-class DynamicFieldsViewMixin(object):
-
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
-
-        fields = None
-        if self.request.method == 'GET':
-            query_fields = self.request.query_params.get("fields", None)
-
-            if query_fields:
-                fields = tuple(query_fields.split(','))
-
-        kwargs['context'] = self.get_serializer_context()
-        kwargs['fields'] = fields
-
-        return serializer_class(*args, **kwargs)
-
-
-class CompanyProfileList(DynamicFieldsViewMixin, generics.ListAPIView):
-    queryset = CompanyProfile.objects.all()
-    serializer_class = CompanyProfileSerializer
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['company_name']
-
-
-class CompanyProfile(DynamicFieldsViewMixin, generics.RetrieveAPIView):
-    queryset = CompanyProfile.objects.all()
-    serializer_class = CompanyProfileSerializer
-
-
-class CompanyQuote(DynamicFieldsViewMixin, generics.RetrieveAPIView):
-    queryset = CompanyQuote.objects.all()
-    serializer_class = CompanyQuoteSerializer
-
-
-class CompanyTradingList(DynamicFieldsViewMixin, generics.ListAPIView):
-    serializer_class = CompanyTradingSerializer
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['market_date']
-
-    def get_queryset(self):
-        company_ticker = self.kwargs['pk']
-        return CompanyTrading.objects.filter(company_ticker=company_ticker)
-
-
-class CompanyAdtvList(DynamicFieldsViewMixin, generics.ListAPIView):
-    serializer_class = CompanyAdtvSerializer
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['date']
-
-    def get_queryset(self):
-        company_ticker = self.kwargs['pk']
-        return CompanyAdtv.objects.filter(company_ticker=company_ticker)
-
-
-class CompanyList(generics.ListCreateAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
-
-
-class FmpDataList(generics.ListCreateAPIView):
-    queryset = FmpData.objects.all()
-    serializer_class = FmpDataSerializer
-
-
-class IexDataList(generics.ListCreateAPIView):
-    queryset = IexData.objects.all()
-    serializer_class = IexDataSerializer
-
-
-class CompanyTradingQuote(APIView):
-
-    def get(self, request, pk, format=None):
-        company_trading_quote = CompanyTrading.objects.filter(company_ticker=pk).order_by('-market_date').first()
-        serializer = CompanyTradingSerializer(company_trading_quote, many=False)
-        return Response(serializer.data)
-
-
-class CompanyAdtvQuote(APIView):
-
-    def get(self, request, pk, format=None):
-        company_adtv_quote = CompanyAdtv.objects.filter(company_ticker=pk).order_by('-date').first()
-        serializer = CompanyAdtvSerializer(company_adtv_quote, many=False)
-        return Response(serializer.data)
-
-
-from rest_framework.decorators import api_view
-from rest_framework.response   import Response
-from rest_framework import status
-
-
-
-
-@api_view(['GET'])
-def company_all_data(request, company_ticker):
-    companies = Company_Profile.objects.raw('SELECT * FROM company_profile LEFT JOIN company_quote ON company_profile.company_ticker=company_quote.company_ticker LEFT JOIN (SELECT c.company_ticker, c.market_date, c.open, c.close, c.high, c.low, c.vwap, c.volume, c.change_percent FROM company_trading c INNER JOIN (SELECT company_ticker, MAX(market_date) as MaxDate FROM company_trading GROUP BY company_ticker) cm ON c.company_ticker=cm.company_ticker AND c.market_date=cm.MaxDate) t ON company_profile.company_ticker=t.company_ticker LEFT JOIN (SELECT a.company_ticker, a.date, a.adtv, a.adtv5, a.adtv10, a.adtv20, a.adtv60, a.adtv120, a.isoutlier, a.aadtv, a.aadtv5, a.aadtv10, a.aadtv20, a.aadtv60, a.aadtv120 FROM company_adtv a INNER JOIN (SELECT company_ticker, MAX(date) as MaxDate FROM company_adtv GROUP BY company_ticker) am ON a.company_ticker=am.company_ticker AND a.date=am.MaxDate) a ON company_profile.company_ticker=a.company_ticker WHERE company_profile.company_ticker=%s;', [company_ticker])
-    serializer = Companies_Quotes_Trading_ADTV_Serializer(companies, many=True)
-    return Response(serializer.data)
-
-
-
-@api_view(['POST'])
-def add_company(request):
-    serializer = AddOnCompanySerializer(data=request.data)
-    if serializer.is_valid():
-        validatedData = serializer.validated_data
-        company_ticker = validatedData.get('company_ticker')
-        company_name = validatedData.get('company_name')
-        if Company.objects.filter(symbol=company_ticker).exists():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            from django.db import connections
-            cursor = connections['companies_db'].cursor()
-            insert_add_on_company(cursor, company_ticker, company_name)
-            insert_add_on_company_profile(cursor, company_ticker)
-            insert_add_on_company_quote(cursor, company_ticker)
-            insert_add_on_company_trading(cursor, company_ticker)
-            insert_add_on_company_adtv(cursor, company_ticker)
-            return Response({"message": "Added to database"})
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
+from company_api.fmpapi import FMPStockData
+from datetime import datetime, date
+import logging
+from dateutil.relativedelta import relativedelta
+import pandas as pd
+import numpy as np
 
 
 def insert_add_on_company(cursor, company_ticker, company_name):
@@ -158,7 +25,6 @@ def insert_add_on_company(cursor, company_ticker, company_name):
 
 
 def insert_add_on_company_profile(cursor, company_ticker):
-    from company_api.fmpapi import FMPStockData
     fmp_data = FMPStockData()
     profile = fmp_data.get_company_profile(company_ticker)
     normaliser = 0
@@ -178,13 +44,10 @@ def insert_add_on_company_profile(cursor, company_ticker):
           profile[0]['industry'], profile[0]['sector'], profile[0]['isin'],
           profile[0]['country'], normaliser])
     else:
-        import logging
         logging.debug_msg("No profile found for company " + company_ticker)
     
 
 def insert_add_on_company_quote(cursor, company_ticker):
-    from company_api.fmpapi import FMPStockData
-    from datetime import datetime, date
     fmp_data = FMPStockData()
     company_quotes = fmp_data.get_company_quote(company_ticker)
     if len(company_quotes) > 0 and 'marketCap' in company_quotes[0]:
@@ -201,14 +64,10 @@ def insert_add_on_company_quote(cursor, company_ticker):
           VALUES (%s, %s, %s, %s)
           """, [company_ticker, market_cap, price, dt_object])
     else:
-        import logging
         logging.debug_msg("Company quotes for " + company_ticker + " is not present")
 
 
 def insert_add_on_company_trading(cursor, company_ticker):
-    from company_api.fmpapi import FMPStockData
-    from datetime import datetime, date
-    from dateutil.relativedelta import relativedelta
     fmp_data = FMPStockData()
     start_date = (date.today() + relativedelta(months=-6)).isoformat()
     historical_data = fmp_data.get_historical_data(company_ticker, start_date)
@@ -253,15 +112,10 @@ def insert_add_on_company_trading(cursor, company_ticker):
               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
               """, [company_ticker, market_date, open_price, close, high, low, vwap, volume, change_percent])
     else:
-        import logging
         logging.debug_msg("Historical data for " + company_ticker + " is not present")
         
 
 def insert_add_on_company_adtv(cursor, company_ticker):
-    import logging
-    import pandas as pd
-    import numpy as np
-
     # constant for trading data columns
     VWAP = 6
     VOLUME = 7
@@ -372,5 +226,3 @@ def insert_add_on_company_adtv(cursor, company_ticker):
           df.at[val, 'isOutlier'], aadtv, round(df.at[val, 'aadtv5'], 2), round(df.at[val, 'aadtv10'], 2), 
           round(df.at[val, 'aadtv20'], 2), round(df.at[val, 'aadtv60'], 2), round(df.at[val, 'aadtv120'], 2)
           ])
-    
-

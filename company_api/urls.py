@@ -1,7 +1,9 @@
 from django.urls import path
 from .views import CompanyProfileList,  CompanyTradingList, CompanyAdtvList, \
                    CompanyProfile, CompanyQuote, CompanyTradingQuote, CompanyAdtvQuote, \
-                   CompanyList, FmpDataList, IexDataList
+                   CompanyList, FmpDataList, IexDataList, \
+                   add_company, \
+                   company_all_data
 
 app_name = 'company_api'
 
@@ -17,4 +19,8 @@ urlpatterns = [
     path('company/list', CompanyList.as_view(), name='company-list-create'),
     path('company/list/fmp', FmpDataList.as_view(), name='fmp-list-create'),
     path('company/list/iex', IexDataList.as_view(), name='iex-list-create'),
+
+    path('add-on', add_company, name="add-on"),
+
+    path("company-detail/<str:company_ticker>", company_all_data, name="company_all_data"),
 ]
