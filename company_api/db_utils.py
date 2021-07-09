@@ -1,9 +1,9 @@
-from company_api.fmpapi import FMPStockData
+from company_api.fmp_api import FMPStockData
 from datetime import datetime, date
-import logging
 from dateutil.relativedelta import relativedelta
 import pandas as pd
 import numpy as np
+import logging
 
 
 def insert_add_on_company(cursor, company_ticker, company_name):
@@ -15,7 +15,6 @@ def insert_add_on_company(cursor, company_ticker, company_name):
 
     cursor.execute("SELECT id FROM company WHERE symbol=%s;", [company_ticker])
     id = cursor.fetchone()[0]
-    print(id)
 
     cursor.execute(
       """
@@ -24,7 +23,7 @@ def insert_add_on_company(cursor, company_ticker, company_name):
       """, [id, company_ticker, company_name])
 
 
-def insert_add_on_company_profile(cursor, company_ticker):
+def insert_company_profile(cursor, company_ticker):
     fmp_data = FMPStockData()
     profile = fmp_data.get_company_profile(company_ticker)
     normaliser = 0
@@ -34,20 +33,18 @@ def insert_add_on_company_profile(cursor, company_ticker):
         cursor.execute(
           """
           INSERT INTO company_profile (
-          company_ticker, 
-          company_name, exchange, exchange_type, currency, 
+          company_ticker, company_name, exchange, exchange_type, currency,
           industry, sector, isin, country, normalizer, am_uid)
           VALUES (%s, %s, %s, '', %s, %s, %s, %s, %s, %s, 1)
-          """, 
-          [company_ticker, 
-          profile[0]['companyName'], profile[0]['exchange'], profile[0]['currency'], 
-          profile[0]['industry'], profile[0]['sector'], profile[0]['isin'],
-          profile[0]['country'], normaliser])
+          """,
+          [company_ticker, profile[0]['companyName'], profile[0]['exchange'],
+           profile[0]['currency'], profile[0]['industry'], profile[0]['sector'],
+           profile[0]['isin'], profile[0]['country'], normaliser])
     else:
         logging.debug_msg("No profile found for company " + company_ticker)
-    
 
-def insert_add_on_company_quote(cursor, company_ticker):
+
+def insert_company_quote(cursor, company_ticker):
     fmp_data = FMPStockData()
     company_quotes = fmp_data.get_company_quote(company_ticker)
     if len(company_quotes) > 0 and 'marketCap' in company_quotes[0]:
@@ -67,7 +64,7 @@ def insert_add_on_company_quote(cursor, company_ticker):
         logging.debug_msg("Company quotes for " + company_ticker + " is not present")
 
 
-def insert_add_on_company_trading(cursor, company_ticker):
+def insert_company_trading(cursor, company_ticker):
     fmp_data = FMPStockData()
     start_date = (date.today() + relativedelta(months=-6)).isoformat()
     historical_data = fmp_data.get_historical_data(company_ticker, start_date)
@@ -108,14 +105,15 @@ def insert_add_on_company_trading(cursor, company_ticker):
 
             cursor.execute(
               """
-              INSERT INTO company_trading (company_ticker, market_date, open, close, high, low, vwap, volume, change_percent)
+              INSERT INTO company_trading
+              (company_ticker, market_date, open, close, high, low, vwap, volume, change_percent)
               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
               """, [company_ticker, market_date, open_price, close, high, low, vwap, volume, change_percent])
     else:
         logging.debug_msg("Historical data for " + company_ticker + " is not present")
-        
 
-def insert_add_on_company_adtv(cursor, company_ticker):
+
+def insert_company_adtv(cursor, company_ticker):
     # constant for trading data columns
     VWAP = 6
     VOLUME = 7
@@ -127,17 +125,17 @@ def insert_add_on_company_adtv(cursor, company_ticker):
                     "aadtv10", "aadtv20", "aadtv60", "aadtv120"]
     cursor.execute(
       """
-      SELECT ct.*, cp.normalizer, cp.exchange FROM 
-      company_trading as ct, 
-      company_profile as cp WHERE 
-      ct.company_ticker=cp.company_ticker AND ct.company_ticker=%s 
+      SELECT ct.*, cp.normalizer, cp.exchange FROM
+      company_trading as ct,
+      company_profile as cp WHERE
+      ct.company_ticker=cp.company_ticker AND ct.company_ticker=%s
       ORDER BY ct.market_date DESC
       """, [company_ticker])
     trading_data = cursor.fetchall()
     print(trading_data)
     if len(trading_data) <= 0:
         logging.debug_msg("Trading data for company " + company_ticker + " is not present")
-  
+
     # Create data frame to save adtv, isOutlier & aadtv values
     df = pd.DataFrame(columns=COLUMN_NAMES)
     adtv_list = []
@@ -214,15 +212,14 @@ def insert_add_on_company_adtv(cursor, company_ticker):
 
         cursor.execute(
           """
-          INSERT INTO 
-          company_adtv 
-          (company_ticker, date, adtv, adtv5, adtv10, adtv20, adtv60, adtv120, 
+          INSERT INTO
+          company_adtv
+          (company_ticker, date, adtv, adtv5, adtv10, adtv20, adtv60, adtv120,
           isoutlier, aadtv, aadtv5, aadtv10, aadtv20, aadtv60, aadtv120)
           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-          """, 
-          [company_ticker, df.at[val, 'date'], 
-          round(df.at[val, 'adtv'], 2), round(df.at[val, 'adtv5'], 2), round(df.at[val, 'adtv10'], 2), 
-          round(df.at[val, 'adtv20'], 2), round(df.at[val, 'adtv60'], 2), round(df.at[val, 'adtv120'], 2), 
-          df.at[val, 'isOutlier'], aadtv, round(df.at[val, 'aadtv5'], 2), round(df.at[val, 'aadtv10'], 2), 
-          round(df.at[val, 'aadtv20'], 2), round(df.at[val, 'aadtv60'], 2), round(df.at[val, 'aadtv120'], 2)
-          ])
+          """,
+          [company_ticker, df.at[val, 'date'],
+           round(df.at[val, 'adtv'], 2), round(df.at[val, 'adtv5'], 2), round(df.at[val, 'adtv10'], 2),
+           round(df.at[val, 'adtv20'], 2), round(df.at[val, 'adtv60'], 2), round(df.at[val, 'adtv120'], 2),
+           df.at[val, 'isOutlier'], aadtv, round(df.at[val, 'aadtv5'], 2), round(df.at[val, 'aadtv10'], 2),
+           round(df.at[val, 'aadtv20'], 2), round(df.at[val, 'aadtv60'], 2), round(df.at[val, 'aadtv120'], 2)])
