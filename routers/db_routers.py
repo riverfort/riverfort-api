@@ -26,7 +26,7 @@ class AuthRouter:
 
 
 class CompanyRouter:
-    route_app_labels = {'company'}
+    route_app_labels = {'company', 'company_api'}
 
     def db_for_read(self, model, **hints):
         if model._meta.app_label in self.route_app_labels:
