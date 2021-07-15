@@ -5,6 +5,9 @@ class AddOnCompany(models.Model):
     company_ticker = models.CharField(max_length=200)
     company_name = models.CharField(max_length=200)
 
+    class Meta:
+        managed = False
+
 
 class Account_Manager(models.Model):
     am_uid = models.AutoField(primary_key=True)
@@ -16,6 +19,7 @@ class Account_Manager(models.Model):
         return self.am_name
 
     class Meta:
+        managed = False
         db_table = 'account_manager'
         app_label = 'company_api'
 
@@ -35,5 +39,6 @@ class Company_Profile(models.Model):
     created_date = models.DateTimeField()
 
     class Meta:
+        managed = False
         db_table = 'company_profile'
         app_label = 'company_api'
