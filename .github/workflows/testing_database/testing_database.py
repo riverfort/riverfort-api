@@ -1,4 +1,4 @@
-from Configuration.config import DatabaseConnection
+from configuration.config import DatabaseConnection
 import db_queries as query
 
 # Create class Objects
