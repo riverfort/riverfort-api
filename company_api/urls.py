@@ -19,7 +19,7 @@ urlpatterns = [
     path('v1/company/list', CompanyList.as_view(), name='company-list-create'),
     path('v1/company/list/fmp', FmpDataList.as_view(), name='fmp-list-create'),
     path('v1/company/list/iex', IexDataList.as_view(), name='iex-list-create'),
-    path("v1/company/<str:ticker>/quote", company_quote_full, name="company-quote-full"),
+    path("v1/company/<str:ticker>/quote", company_quote_full, name='company-quote-full'),
 
-    path('v1/add-on', add_company, name="add-on"),
+    path('v1/add-on', add_company, name='add-on'),
 ]

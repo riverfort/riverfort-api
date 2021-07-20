@@ -8,3 +8,10 @@ coverage run --omit='*/venv/*' manage.py test
 coverage html
 
 flake8
+
+# Migration example:
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py sqlmigrate blog 0001
+python3 manage.py showmigrations
+python3 manage.py migrate blog 0001 --plan
