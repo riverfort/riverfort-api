@@ -42,7 +42,19 @@ jobs:
             -e POSTGRESQL_DATABASE=riverFort \
             -p 5432:5432 \
             bitnami/postgresql:11.4.0
-          pip install psycopg2-binary
+
+          pip install certifi==2021.5.30
+          pip install chardet==4.0.0
+          pip install idna==2.10
+          pip install numpy==1.21.0
+          pip install pandas==1.2.5
+          pip install psycopg2==2.9.1
+          pip install python-dateutil==2.8.1
+          pip install pytz==2021.1
+          pip install requests==2.25.1
+          pip install six==1.16.0
+          pip install urllib3==1.26.6
+
           python .github/workflows/testing_database.py
 
       - name: Coverage report

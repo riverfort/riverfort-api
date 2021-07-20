@@ -17,7 +17,7 @@ class DatabaseConnection(object):
     def connect(self):
         connection = None
         try:
-            # logging.debug_msg('Connecting to the PostgreSQL database...')
+            logging.debug_msg('Connecting to the PostgreSQL database...')
             # Connect to postgres sql database
             connection = psycopg2.connect(database=self.database,
                                           user=self.user,
@@ -31,16 +31,16 @@ class DatabaseConnection(object):
             cursor.execute('SELECT version()')
 
             # display the PostgreSQL database server version
-            # db_version = cursor.fetchone()
-            # logging.debug_msg(f'PostgreSQL database version: {db_version}')
+            db_version = cursor.fetchone()
+            logging.debug_msg(f'PostgreSQL database version: {db_version}')
         except (Exception, psycopg2.DatabaseError) as error:
             logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
-                # logging.debug_msg('Database is connected successfully.')
+                logging.debug_msg('Database is connected successfully.')
             else:
-                # logging.debug_msg('Database is not connected successfully.')
+                logging.debug_msg('Database is not connected successfully.')
                 sys.exit()
 
     def create_table(self, command):
