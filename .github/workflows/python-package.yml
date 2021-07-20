@@ -1,6 +1,15 @@
 name: CI (Testing)
 
-on: [push, pull_request]
+on:
+  push:
+    branches: 
+      - '**'
+  pull_request:
+    branches:
+      - main
+  release:
+    types:
+      - created
 
 jobs:
   build: 
