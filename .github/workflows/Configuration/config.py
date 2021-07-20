@@ -31,7 +31,7 @@ class DatabaseConnection(object):
             cursor.execute('SELECT version()')
 
             # display the PostgreSQL database server version
-            db_version = cursor.fetchone()
+            # db_version = cursor.fetchone()
             # logging.debug_msg(f'PostgreSQL database version: {db_version}')
         except (Exception, psycopg2.DatabaseError) as error:
             logging.error("DB-ERROR: ", str(error))
