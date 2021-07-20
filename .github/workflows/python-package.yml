@@ -17,7 +17,6 @@ jobs:
   build: 
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/checkout@v2
 
       - name: Set up Python
@@ -43,7 +42,7 @@ jobs:
             -e POSTGRESQL_DATABASE=testing_database \
             -p 5432:5432 \
             bitnami/postgresql:11.4.0
-          python test_database.py
+          python testing_database.py
  
       - name: Coverage report
         env: 
