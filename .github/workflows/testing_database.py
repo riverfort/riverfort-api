@@ -2,7 +2,7 @@ from Configuration.config import DatabaseConnection
 import db_queries as query
 
 # Create class Objects
-db = DatabaseConnection("riverFort", "river", "fort", "127.0.0.1", 5432)
+db = DatabaseConnection("riverFort", "river", "fort", "localhost", 5432)
 
 # create all tables
 # db.create_table(companies_list)
