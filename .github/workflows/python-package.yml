@@ -42,7 +42,7 @@ jobs:
             -e POSTGRESQL_DATABASE=testing_database \
             -p 5432:5432 \
             bitnami/postgresql:11.4.0
-          python testing_database.py
+          python .github/workflows/testing_database.py
  
       - name: Coverage report
         env: 
