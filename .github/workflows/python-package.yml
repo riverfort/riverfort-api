@@ -33,12 +33,24 @@ jobs:
       - name: Lint with flake8
         run: flake8
 
+      - name: Set up testing database
+        run: |
+          docker run \
+            -d --name postgresql \
+            -e POSTGRESQL_POSTGRES_PASSWORD=password123 \
+            -e POSTGRESQL_USERNAME=user \
+            -e POSTGRESQL_PASSWORD=password \
+            -e POSTGRESQL_DATABASE=testing_database \
+            -p 5432:5432 \
+            bitnami/postgresql:11.4.0
+          python test_database.py
+ 
       - name: Coverage report
         env: 
           SECRET_KEY: om_8x$k00o5f-c=2v5fo#%rmwt8pmar_nzmmulj4hq%wn9q2^c
           ALLOWED_HOSTS: 127.0.0.1
           COMPANIES_DATABASE_ENGINE: postgresql_psycopg2
-          COMPANIES_DATABASE_NAME: name
+          COMPANIES_DATABASE_NAME: testing_database
           COMPANIES_DATABASE_USER: user
           COMPANIES_DATABASE_PASSWORD: password
           COMPANIES_DATABASE_HOST: 127.0.0.1
