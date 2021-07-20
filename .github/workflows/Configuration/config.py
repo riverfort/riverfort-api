@@ -1,5 +1,5 @@
 import psycopg2
-import logger
+import logging
 import sys
 
 
@@ -17,7 +17,7 @@ class DatabaseConnection(object):
     def connect(self):
         connection = None
         try:
-            logger.debug_msg('Connecting to the PostgreSQL database...')
+            logging.debug_msg('Connecting to the PostgreSQL database...')
             # Connect to postgres sql database
             connection = psycopg2.connect(database=self.database,
                                           user=self.user,
@@ -32,15 +32,15 @@ class DatabaseConnection(object):
 
             # display the PostgreSQL database server version
             db_version = cursor.fetchone()
-            logger.debug_msg(f'PostgreSQL database version: {db_version}')
+            logging.debug_msg(f'PostgreSQL database version: {db_version}')
         except (Exception, psycopg2.DatabaseError) as error:
-            logger.error("DB-ERROR: ", str(error))
+            logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
-                logger.debug_msg('Database is connected successfully.')
+                logging.debug_msg('Database is connected successfully.')
             else:
-                logger.debug_msg('Database is not connected successfully.')
+                logging.debug_msg('Database is not connected successfully.')
                 sys.exit()
 
     def create_table(self, command):
@@ -62,7 +62,7 @@ class DatabaseConnection(object):
             connection.close()
             print("Table created successfully.")
         except (Exception, psycopg2.DatabaseError) as error:
-            logger.error("DB-ERROR: ", str(error))
+            logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
@@ -86,7 +86,7 @@ class DatabaseConnection(object):
             connection.close()
             return id
         except (Exception, psycopg2.DatabaseError) as error:
-            logger.error("DB-ERROR: ", str(error))
+            logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
@@ -110,7 +110,7 @@ class DatabaseConnection(object):
             connection.close()
             return records
         except (Exception, psycopg2.DatabaseError) as error:
-            logger.error("DB-ERROR: ", str(error))
+            logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
@@ -134,7 +134,7 @@ class DatabaseConnection(object):
             connection.close()
             return records
         except (Exception, psycopg2.DatabaseError) as error:
-            logger.error("DB-ERROR: ", str(error))
+            logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
@@ -159,7 +159,7 @@ class DatabaseConnection(object):
 
             return rows_deleted
         except (Exception, psycopg2.DatabaseError) as error:
-            logger.error("DB-ERROR: ", str(error))
+            logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
@@ -183,7 +183,7 @@ class DatabaseConnection(object):
             connection.close()
             return updated_rows
         except (Exception, psycopg2.DatabaseError) as error:
-            logger.error("DB-ERROR: ", str(error))
+            logging.error("DB-ERROR: ", str(error))
         finally:
             if connection is not None:
                 connection.close()
