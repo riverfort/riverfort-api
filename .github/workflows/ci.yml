@@ -1,4 +1,4 @@
-name: CI (Testing)
+name: CI
 
 on:
   push:
@@ -7,9 +7,6 @@ on:
   pull_request:
     branches:
       - main
-  release:
-    types:
-      - created
   schedule:
     - cron: '0 8 * * *'
 
