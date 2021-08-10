@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'company',
     'company_api',
+    'notification_api',
 ]
 
 MIDDLEWARE = [
