@@ -53,6 +53,12 @@ jobs:
           COMPANIES_DATABASE_PASSWORD: testing_password
           COMPANIES_DATABASE_HOST: 127.0.0.1
           COMPANIES_DATABASE_PORT: 5432
+          NOTIFICATION_DATABASE_ENGINE: postgresql_psycopg2
+          NOTIFICATION_DATABASE_NAME: testing_database
+          NOTIFICATION_DATABASE_USER: testing_user
+          NOTIFICATION_DATABASE_PASSWORD: testing_password
+          NOTIFICATION_DATABASE_HOST: 127.0.0.1
+          NOTIFICATION_DATABASE_PORT: 5432
         run: |
           coverage run --omit='*/venv/*' manage.py test
           coverage report
