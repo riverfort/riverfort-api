@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
-from company_api.models import Company_Profile
+from apps.company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
+from apps.company_api.models import Company_Profile
 from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
                          CompanyTradingSerializer, CompanyAdtvSerializer, \
                          CompanySerializer, FmpDataSerializer, IexDataSerializer, \

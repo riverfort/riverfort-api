@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class NotificationApiConfig(AppConfig):
+class CompanyApiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'notification_api'
+    name = 'apps.company_api'

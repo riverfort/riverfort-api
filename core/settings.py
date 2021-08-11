@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
-    'company',
-    'company_api',
-    'notification',
-    'notification_api',
+    'apps.company',
+    'apps.company_api',
+    'apps.notification',
+    'apps.notification_api',
 ]
 
 MIDDLEWARE = [
