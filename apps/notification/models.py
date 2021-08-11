@@ -26,10 +26,10 @@ class UserDevice(models.Model):
 
 
 class Watchlist(models.Model):
-    device = models.OneToOneField(UserDevice, models.DO_NOTHING, primary_key=True)
-    company_ticker = models.ForeignKey(Company, models.DO_NOTHING, db_column='company_ticker')
+    watchlist_id = models.AutoField(primary_key=True)
+    device = models.ForeignKey(UserDevice, models.DO_NOTHING, blank=True, null=True)
+    company_ticker = models.ForeignKey(Company, models.DO_NOTHING, db_column='company_ticker', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'watchlist'
-        unique_together = (('device', 'company_ticker'),)
