@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.company.urls', namespace='company')),
     path('api/', include('apps.company_api.urls', namespace='company_api')),
-    # path('notification/', include('apps.notification_api.urls', namespace='notification_api')),
+    path('notification/', include('apps.notification_api.urls', namespace='notification_api')),
     path('docs', include_docs_urls(title='RiverFort REST API')),
     path('schema', get_schema_view(
         title="RiverFort REST API",
