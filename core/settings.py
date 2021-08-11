@@ -102,6 +102,17 @@ DATABASES = {
             'DEPENDENCIES': []
         },
     },
+    'notification_db': {
+        'ENGINE': 'django.db.backends.{}'.format(config('NOTIFICATION_DATABASE_ENGINE')),
+        'NAME': config('NOTIFICATION_DATABASE_NAME'),
+        'USER': config('NOTIFICATION_DATABASE_USER'),
+        'PASSWORD': config('NOTIFICATION_DATABASE_PASSWORD'),
+        'HOST': config('NOTIFICATION_DATABASE_HOST'),
+        'PORT': config('NOTIFICATION_DATABASE_PORT'),
+        'TEST': {
+            'DEPENDENCIES': []
+        },
+    },
 }
 
 DATABASE_ROUTERS = ['routers.db_routers.AuthRouter', 'routers.db_routers.CompanyRouter', ]
