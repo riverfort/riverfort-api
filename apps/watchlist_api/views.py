@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.response import Response
 from apps.watchlist.models import UserDevice, Company, Watchlist
 from .serializers import UserDeviceSerializer, CompanySerializer, WatchlistSerializer
 
