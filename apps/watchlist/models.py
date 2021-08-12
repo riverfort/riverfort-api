@@ -33,3 +33,4 @@ class Watchlist(models.Model):
     class Meta:
         managed = False
         db_table = 'watchlist'
+        unique_together = (('device', 'company_ticker'),)

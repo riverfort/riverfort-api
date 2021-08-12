@@ -4,8 +4,9 @@ python manage.py createsuperuser --database=users_db
 python manage.py inspectdb --database=companies_db
 python manage.py inspectdb --database=companies_db > models.py
 
-python manage.py inspectdb --database=notification_db
-python manage.py inspectdb --database=notification_db > models.py
+python manage.py inspectdb --database=watchlist_db
+python manage.py inspectdb --database=watchlist_db > models.py
+python3 ../manage.py inspectdb --database=watchlist_db > watchlist/models.py
 
 coverage run --omit='*/venv/*' manage.py test
 coverage html
