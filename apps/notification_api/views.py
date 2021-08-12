@@ -8,6 +8,11 @@ class UserDeviceList(generics.ListCreateAPIView):
     serializer_class = UserDeviceSerializer
 
 
+class UserDeviceDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserDevice.objects.all()
+    serializer_class = UserDeviceSerializer
+
+
 class CompanyList(generics.ListCreateAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
