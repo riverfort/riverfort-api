@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class NotificationApiConfig(AppConfig):
+class WatchlistConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.notification_api'
+    name = 'apps.watchlist'

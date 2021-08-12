@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.company',
     'apps.company_api',
-    'apps.notification',
-    'apps.notification_api',
+    'apps.watchlist',
+    'apps.watchlist_api',
 ]
 
 MIDDLEWARE = [
@@ -102,13 +102,13 @@ DATABASES = {
             'DEPENDENCIES': []
         },
     },
-    'notification_db': {
-        'ENGINE': 'django.db.backends.{}'.format(config('NOTIFICATION_DATABASE_ENGINE')),
-        'NAME': config('NOTIFICATION_DATABASE_NAME'),
-        'USER': config('NOTIFICATION_DATABASE_USER'),
-        'PASSWORD': config('NOTIFICATION_DATABASE_PASSWORD'),
-        'HOST': config('NOTIFICATION_DATABASE_HOST'),
-        'PORT': config('NOTIFICATION_DATABASE_PORT'),
+    'watchlist_db': {
+        'ENGINE': 'django.db.backends.{}'.format(config('WATCHLIST_DATABASE_ENGINE')),
+        'NAME': config('WATCHLIST_DATABASE_NAME'),
+        'USER': config('WATCHLIST_DATABASE_USER'),
+        'PASSWORD': config('WATCHLIST_DATABASE_PASSWORD'),
+        'HOST': config('WATCHLIST_DATABASE_HOST'),
+        'PORT': config('WATCHLIST_DATABASE_PORT'),
         'TEST': {
             'DEPENDENCIES': []
         },
@@ -117,7 +117,7 @@ DATABASES = {
 
 DATABASE_ROUTERS = ['routers.db_routers.AuthRouter',
                     'routers.db_routers.CompanyRouter',
-                    'routers.db_routers.NotificationRouter']
+                    'routers.db_routers.WatchlistRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

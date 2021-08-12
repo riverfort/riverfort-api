@@ -1,5 +1,5 @@
 from rest_framework import generics
-from apps.notification.models import UserDevice, Company, Watchlist
+from apps.watchlist.models import UserDevice, Company, Watchlist
 from .serializers import UserDeviceSerializer, CompanySerializer, WatchlistSerializer
 
 

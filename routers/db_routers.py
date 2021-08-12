@@ -52,17 +52,17 @@ class CompanyRouter:
         return None
 
 
-class NotificationRouter:
-    route_app_labels = {'notification', 'notification_api'}
+class WatchlistRouter:
+    route_app_labels = {'watchlist', 'watchlist_api'}
 
     def db_for_read(self, model, **hints):
         if model._meta.app_label in self.route_app_labels:
-            return 'notification_db'
+            return 'watchlist_db'
         return None
 
     def db_for_write(self, model, **hints):
         if model._meta.app_label in self.route_app_labels:
-            return 'notification_db'
+            return 'watchlist_db'
         return None
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -75,5 +75,5 @@ class NotificationRouter:
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
         if app_label in self.route_app_labels:
-            return db == 'notification_db'
+            return db == 'watchlist_db'
         return None
