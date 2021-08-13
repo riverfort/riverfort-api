@@ -27,8 +27,8 @@ class UserDevice(models.Model):
 
 class Watchlist(models.Model):
     watchlist_id = models.AutoField(primary_key=True)
-    device = models.ForeignKey(UserDevice, models.DO_NOTHING, blank=True, null=True)
-    company_ticker = models.ForeignKey(Company, models.DO_NOTHING, db_column='company_ticker', blank=True, null=True)
+    device = models.ForeignKey(UserDevice, models.DO_NOTHING)
+    company_ticker = models.ForeignKey(Company, models.DO_NOTHING, db_column='company_ticker')
 
     class Meta:
         managed = False
