@@ -3,26 +3,6 @@ from apps.watchlist.models import UserDevice, Company, Watchlist
 from .serializers import UserDeviceSerializer, CompanySerializer, WatchlistSerializer
 
 
-class UserDeviceList(generics.ListCreateAPIView):
-    queryset = UserDevice.objects.all()
-    serializer_class = UserDeviceSerializer
-
-
-class UserDeviceDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserDevice.objects.all()
-    serializer_class = UserDeviceSerializer
-
-
-class CompanyList(generics.ListCreateAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
-
-
-class WatchlistList(generics.ListCreateAPIView):
-    queryset = Watchlist.objects.all()
-    serializer_class = WatchlistSerializer
-
-
 class MultipleFieldLookupMixin:
     """
     Apply this mixin to any view or viewset to get multiple field filtering
@@ -42,6 +22,26 @@ class MultipleFieldLookupMixin:
         obj = get_object_or_404(queryset, **filter)  # Lookup the object
         self.check_object_permissions(self.request, obj)
         return obj
+
+
+class UserDeviceList(generics.ListCreateAPIView):
+    queryset = UserDevice.objects.all()
+    serializer_class = UserDeviceSerializer
+
+
+class UserDeviceDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserDevice.objects.all()
+    serializer_class = UserDeviceSerializer
+
+
+class CompanyList(generics.ListCreateAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+
+
+class WatchlistList(generics.ListCreateAPIView):
+    queryset = Watchlist.objects.all()
+    serializer_class = WatchlistSerializer
 
 
 class WatchlistDetail(MultipleFieldLookupMixin, generics.RetrieveUpdateDestroyAPIView):
