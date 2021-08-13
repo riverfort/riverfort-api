@@ -17,6 +17,17 @@ class Company(models.Model):
         db_table = 'company'
 
 
+class CompanyNews(models.Model):
+    company_ticker = models.OneToOneField(Company, models.DO_NOTHING, db_column='company_ticker', primary_key=True)
+    pub_date = models.DateTimeField()
+    title = models.CharField(max_length=200)
+
+    class Meta:
+        managed = False
+        db_table = 'company_news'
+        unique_together = (('company_ticker', 'pub_date'),)
+
+
 class UserDevice(models.Model):
     device_id = models.CharField(primary_key=True, max_length=200)
 
