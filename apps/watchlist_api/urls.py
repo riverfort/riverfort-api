@@ -6,7 +6,7 @@ app_name = 'notification_api'
 urlpatterns = [
     path('v1', views.WatchlistList.as_view(), name='watchlist'),
     path(
-      'v1/device/<str:device>/company/<str:company_ticker>',
+      'v1/device/<str:device_token>/company/<str:company_ticker>',
       views.WatchlistDetail.as_view(),
       name='watchlist-detail'),
     path('v1/user-devices', views.UserDeviceList.as_view(), name='user-devices-list'),
