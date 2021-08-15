@@ -47,4 +47,4 @@ class WatchlistList(generics.ListCreateAPIView):
 class WatchlistDetail(MultipleFieldLookupMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Watchlist.objects.all()
     serializer_class = WatchlistSerializer
-    lookup_fields = ['device', 'company_ticker']
+    lookup_fields = ['device_token', 'company_ticker']

@@ -6,7 +6,7 @@ class UserDeviceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserDevice
-        fields = ('device_id',)
+        fields = ('device_token',)
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -20,4 +20,4 @@ class WatchlistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Watchlist
-        fields = ('device', 'company_ticker')
+        fields = ('device_token', 'company_ticker')

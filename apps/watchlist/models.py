@@ -29,7 +29,7 @@ class CompanyNews(models.Model):
 
 
 class UserDevice(models.Model):
-    device_id = models.CharField(primary_key=True, max_length=200)
+    device_token = models.CharField(primary_key=True, max_length=200)
 
     class Meta:
         managed = False
@@ -38,10 +38,10 @@ class UserDevice(models.Model):
 
 class Watchlist(models.Model):
     watchlist_id = models.AutoField(primary_key=True)
-    device = models.ForeignKey(UserDevice, models.DO_NOTHING)
+    device_token = models.ForeignKey(UserDevice, models.DO_NOTHING, db_column='device_token')
     company_ticker = models.ForeignKey(Company, models.DO_NOTHING, db_column='company_ticker')
 
     class Meta:
         managed = False
         db_table = 'watchlist'
-        unique_together = (('device', 'company_ticker'),)
+        unique_together = (('device_token', 'company_ticker'),)
