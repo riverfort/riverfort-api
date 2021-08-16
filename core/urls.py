@@ -7,8 +7,9 @@ from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('company.urls', namespace='company')),
-    path('api/', include('company_api.urls', namespace='company_api')),
+    path('', include('apps.company.urls', namespace='company')),
+    path('api/', include('apps.company_api.urls', namespace='company_api')),
+    path('watchlist/', include('apps.watchlist_api.urls', namespace='watchlist_api')),
     path('docs', include_docs_urls(title='RiverFort REST API')),
     path('schema', get_schema_view(
         title="RiverFort REST API",

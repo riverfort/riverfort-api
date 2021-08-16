@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
-from company_api.models import AddOnCompany
+from apps.company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
+from apps.company_api.models import AddOnCompany
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):

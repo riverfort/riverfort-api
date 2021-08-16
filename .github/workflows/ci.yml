@@ -53,6 +53,12 @@ jobs:
           COMPANIES_DATABASE_PASSWORD: testing_password
           COMPANIES_DATABASE_HOST: 127.0.0.1
           COMPANIES_DATABASE_PORT: 5432
+          WATCHLIST_DATABASE_ENGINE: postgresql_psycopg2
+          WATCHLIST_DATABASE_NAME: testing_database
+          WATCHLIST_DATABASE_USER: testing_user
+          WATCHLIST_DATABASE_PASSWORD: testing_password
+          WATCHLIST_DATABASE_HOST: 127.0.0.1
+          WATCHLIST_DATABASE_PORT: 5432
         run: |
           coverage run --omit='*/venv/*' manage.py test
           coverage report

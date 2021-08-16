@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
-    'company',
-    'company_api',
+    'apps.company',
+    'apps.company_api',
+    'apps.watchlist',
+    'apps.watchlist_api',
 ]
 
 MIDDLEWARE = [
@@ -100,9 +102,22 @@ DATABASES = {
             'DEPENDENCIES': []
         },
     },
+    'watchlist_db': {
+        'ENGINE': 'django.db.backends.{}'.format(config('WATCHLIST_DATABASE_ENGINE')),
+        'NAME': config('WATCHLIST_DATABASE_NAME'),
+        'USER': config('WATCHLIST_DATABASE_USER'),
+        'PASSWORD': config('WATCHLIST_DATABASE_PASSWORD'),
+        'HOST': config('WATCHLIST_DATABASE_HOST'),
+        'PORT': config('WATCHLIST_DATABASE_PORT'),
+        'TEST': {
+            'DEPENDENCIES': []
+        },
+    },
 }
 
-DATABASE_ROUTERS = ['routers.db_routers.AuthRouter', 'routers.db_routers.CompanyRouter', ]
+DATABASE_ROUTERS = ['routers.db_routers.AuthRouter',
+                    'routers.db_routers.CompanyRouter',
+                    'routers.db_routers.WatchlistRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
