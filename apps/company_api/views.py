@@ -4,13 +4,17 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.db import connections
 
 from apps.company.models import CompanyProfile, CompanyQuote, CompanyTrading, CompanyAdtv, Company, FmpData, IexData
 from apps.company_api.models import Company_Profile
 from .serializers import CompanyProfileSerializer, CompanyQuoteSerializer, \
                          CompanyTradingSerializer, CompanyAdtvSerializer, \
                          CompanySerializer, FmpDataSerializer, IexDataSerializer, \
-                         Companies_Quotes_Trading_ADTV_Serializer
+                         Companies_Quotes_Trading_ADTV_Serializer, \
+                         AddOnCompanySerializer
+from .db_utils import insert_add_on_company, insert_company_profile, \
+                      insert_company_quote, insert_company_trading, insert_company_adtv
 
 
 class DynamicFieldsViewMixin(object):
@@ -122,7 +126,6 @@ def company_quote_full(request, ticker):
 
 @api_view(['POST'])
 def add_company(request):
-    from company_api.serializers import AddOnCompanySerializer
     serializer = AddOnCompanySerializer(data=request.data)
     if serializer.is_valid():
         validatedData = serializer.validated_data
@@ -131,9 +134,6 @@ def add_company(request):
         if Company.objects.filter(symbol=company_ticker).exists():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            from django.db import connections
-            from company_api.db_utils import insert_add_on_company, insert_company_profile, \
-                insert_company_quote, insert_company_trading, insert_company_adtv
             cursor = connections['companies_db'].cursor()
             insert_add_on_company(cursor, company_ticker, company_name)
             insert_company_profile(cursor, company_ticker)

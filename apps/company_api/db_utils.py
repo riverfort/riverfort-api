@@ -1,4 +1,4 @@
-from company_api.fmp_api import FMPStockData
+from .fmp_api import FMPStockData
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 import pandas as pd
