@@ -24,12 +24,12 @@ class MultipleFieldLookupMixin:
         return obj
 
 
-class UserDeviceList(generics.ListCreateAPIView):
+class DeviceTokensList(generics.ListCreateAPIView):
     queryset = DeviceTokens.objects.all()
     serializer_class = DeviceTokensSerializer
 
 
-class UserDeviceDetail(generics.RetrieveUpdateDestroyAPIView):
+class DeviceTokenDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DeviceTokens.objects.all()
     serializer_class = DeviceTokensSerializer
 
