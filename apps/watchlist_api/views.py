@@ -1,6 +1,6 @@
 from rest_framework import generics
-from apps.watchlist.models import UserDevice, Company, Watchlist
-from .serializers import UserDeviceSerializer, CompanySerializer, WatchlistSerializer
+from apps.watchlist.models import DeviceTokens, Watchlist
+from .serializers import DeviceTokensSerializer, WatchlistSerializer
 
 
 class MultipleFieldLookupMixin:
@@ -24,19 +24,14 @@ class MultipleFieldLookupMixin:
         return obj
 
 
-class UserDeviceList(generics.ListCreateAPIView):
-    queryset = UserDevice.objects.all()
-    serializer_class = UserDeviceSerializer
+class DeviceTokensList(generics.ListCreateAPIView):
+    queryset = DeviceTokens.objects.all()
+    serializer_class = DeviceTokensSerializer
 
 
-class UserDeviceDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserDevice.objects.all()
-    serializer_class = UserDeviceSerializer
-
-
-class CompanyList(generics.ListCreateAPIView):
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+class DeviceTokenDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DeviceTokens.objects.all()
+    serializer_class = DeviceTokensSerializer
 
 
 class WatchlistList(generics.ListCreateAPIView):
@@ -47,4 +42,4 @@ class WatchlistList(generics.ListCreateAPIView):
 class WatchlistDetail(MultipleFieldLookupMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Watchlist.objects.all()
     serializer_class = WatchlistSerializer
-    lookup_fields = ['device_token', 'company_ticker']
+    lookup_fields = ['device_token', 'company_symbol']

@@ -75,7 +75,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: riverfort/api-rf:v1.0.0
+          tags: riverfort/riverfort-api:v1.0.0
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

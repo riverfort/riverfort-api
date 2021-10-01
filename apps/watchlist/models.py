@@ -8,40 +8,49 @@
 from django.db import models
 
 
-class Company(models.Model):
-    company_ticker = models.CharField(primary_key=True, max_length=25)
-    company_name = models.CharField(max_length=100)
+class Companies(models.Model):
+    company_symbol = models.CharField(primary_key=True, max_length=200)
+    company_name = models.CharField(max_length=200, blank=True, null=True)
+    exchange = models.ForeignKey('Exchanges', models.DO_NOTHING, db_column='exchange')
 
     class Meta:
         managed = False
-        db_table = 'company'
+        db_table = 'companies'
 
 
 class CompanyNews(models.Model):
-    company_ticker = models.OneToOneField(Company, models.DO_NOTHING, db_column='company_ticker', primary_key=True)
+    company_symbol = models.OneToOneField(Companies, models.DO_NOTHING, db_column='company_symbol', primary_key=True)
     pub_date = models.DateTimeField()
     title = models.CharField(max_length=200)
 
     class Meta:
         managed = False
         db_table = 'company_news'
-        unique_together = (('company_ticker', 'pub_date'),)
+        unique_together = (('company_symbol', 'pub_date'),)
 
 
-class UserDevice(models.Model):
+class DeviceTokens(models.Model):
     device_token = models.CharField(primary_key=True, max_length=200)
 
     class Meta:
         managed = False
-        db_table = 'user_device'
+        db_table = 'device_tokens'
+
+
+class Exchanges(models.Model):
+    exchange = models.CharField(primary_key=True, max_length=200)
+
+    class Meta:
+        managed = False
+        db_table = 'exchanges'
 
 
 class Watchlist(models.Model):
     watchlist_id = models.AutoField(primary_key=True)
-    device_token = models.ForeignKey(UserDevice, models.DO_NOTHING, db_column='device_token')
-    company_ticker = models.ForeignKey(Company, models.DO_NOTHING, db_column='company_ticker')
+    device_token = models.ForeignKey(DeviceTokens, models.DO_NOTHING, db_column='device_token')
+    company_symbol = models.ForeignKey(Companies, models.DO_NOTHING, db_column='company_symbol')
 
     class Meta:
         managed = False
         db_table = 'watchlist'
-        unique_together = (('device_token', 'company_ticker'),)
+        unique_together = (('device_token', 'company_symbol'),)
