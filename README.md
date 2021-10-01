@@ -1,4 +1,4 @@
-# api-rf
+# riverfort-api
 
 ## Setup virtual environment
 ```
