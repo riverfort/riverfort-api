@@ -1,5 +1,18 @@
 # api-rf
 
+## Setup virtual environment
+```
+cd riverfort-api
+python3 -m venv venv
+source venv/bin/activate
+```
+
+## Install
+```
+cd riverfort-api
+pip install -r requirements.txt
+```
+
 ## Deployment
 The command for build a docker image is: 
 ```
