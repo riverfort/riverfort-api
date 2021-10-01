@@ -9,7 +9,6 @@ urlpatterns = [
       'v1/device/<str:device_token>/company/<str:company_ticker>',
       views.WatchlistDetail.as_view(),
       name='watchlist-detail'),
-    path('v1/user-devices', views.UserDeviceList.as_view(), name='user-devices-list'),
-    path('v1/user-devices/<str:pk>', views.UserDeviceDetail.as_view(), name='user-device-detail'),
-    path('v1/companies', views.CompanyList.as_view(), name='companies-list'),
+    path('v1/device-tokens', views.DeviceTokensList.as_view(), name='device-token-list'),
+    path('v1/device-tokens/<str:pk>', views.DeviceTokenDetail.as_view(), name='device-token-detail'),
 ]
