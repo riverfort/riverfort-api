@@ -13,6 +13,12 @@ cd riverfort-api
 pip install -r requirements.txt
 ```
 
+## Create .env
+See .env.example and supply values
+```
+touch .env
+```
+
 ## Deployment
 The command for build a docker image is: 
 ```
