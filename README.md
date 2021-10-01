@@ -31,7 +31,7 @@ docker run -d \
 --name riverfort-api-<VERSION> \
 --env-file env \
 -p 80:8000 \
-sriverfort/riverfort-api:<VERSION>
+riverfort/riverfort-api:<VERSION>
 ```
 where:
 * `<VERSION>` is a string, e.g. `docker build -t riverfort/riverfort-api:v1.0.0 .`
