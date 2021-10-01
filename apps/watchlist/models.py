@@ -46,7 +46,8 @@ class Exchanges(models.Model):
 
 
 class Watchlist(models.Model):
-    device_token = models.OneToOneField(DeviceTokens, models.DO_NOTHING, db_column='device_token', primary_key=True)
+    watchlist_id = models.AutoField(primary_key=True)
+    device_token = models.ForeignKey(DeviceTokens, models.DO_NOTHING, db_column='device_token')
     company_symbol = models.ForeignKey(Companies, models.DO_NOTHING, db_column='company_symbol')
 
     class Meta:
